@@ -1,40 +1,25 @@
 'use strict';
 
+let show = document.getElementById('showBtn')
+let toggle = document.getElementById('togBtn')
+
 let todoList = {
     todos: [],
-    displayTodos: function(){
-        if(this.todos.length === 0){
-            console.log('no todos!')
-        } else {
-            console.log('My Todos: ')
-            for(let i = 0; i < this.todos.length; i++){
-                if(this.todos[i].completed === true){
-                    console.log('( x )',  this.todos[i])
-                } else {
-                    console.log('(   )', this.todos[i])
-                }
-            }
-        }
-    },
-    addTodo: function(task) {
+    addTodo: function(todo) {
         this.todos.push({
-            todoText: task,
+            todo: todo,
             completed: false
         });
-        this.displayTodos()
     },
-    changeTodo: function(i, task){
-        this.todos[i].todoText = task
-        this.displayTodos()
+    changeTodo: function(i, todo){
+        this.todos[i].todo = todo
     },
     deleteTodo: function(i){
         this.todos.splice(i, 1)
-        this.displayTodos()
     },
     toggleCompleted: function(i) {
         let todo = this.todos[i]
         todo.completed = !todo.completed
-        this.displayTodos()
     },
     toggleAll: function(){
         let totalTodos = this.todos.length
@@ -53,6 +38,58 @@ let todoList = {
                 this.todos[i].completed = true
             }
         }
-        this.displayTodos()
     }
 };
+
+let handlers = {
+    addTodo: function(){
+        let addInput = document.getElementById('inputBox')
+        todoList.addTodo(addInput.value)
+        addInput.value = ''
+        view.displayTodos()
+    },
+    changeTodo: function(){
+        let changePos = document.getElementById('changeIndex')
+        let changeValue = document.getElementById('changeValue')
+        todoList.changeTodo(changePos.valueAsNumber, changeValue.value)
+        changePos.value = ''
+        changeValue.value = ''
+        view.displayTodos()
+    },
+    deleteTodo: function() {
+        let deleteVal = document.getElementById('deleteIndex')
+        todoList.deleteTodo(deleteVal.valueAsNumber)
+        deleteVal.value = ''
+        view.displayTodos()
+    },
+    toggleComplete: function() {
+        let toggleCom = document.getElementById('toggle')
+        todoList.toggleCompleted(toggleCom.valueAsNumber)
+        toggleCom.value = ''
+        view.displayTodos()
+    },
+    toggleAll: function() {
+        todoList.toggleAll()
+        view.displayTodos()
+    }
+}
+
+let view = {
+    displayTodos: function() {
+        let listRoot = document.querySelector('ul')
+        listRoot.innerHTML = ''
+        for(let i = 0; i < todoList.todos.length; i++){
+            let todoLi = document.createElement('li')
+            let todo = todoList.todos[i]
+            let todoTextWithCompletion = ''
+            
+            if(todo.completed === true){
+                todoTextWithCompletion = '( x )' + todo.todo
+            }else {
+                todoTextWithCompletion = '(   )' + todo.todo
+            }
+            todoLi.textContent = todoTextWithCompletion
+            listRoot.appendChild(todoLi)
+        }
+    }
+}

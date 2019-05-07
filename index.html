@@ -9,13 +9,39 @@
     <title>Vanilla Todo</title>
 </head>
 <body>
-    <main id='container'>
-        <h1 id='title'> todos </h1>
-        <form>
+    <h1 id='title'> todos </h1>
+    <main id='inputArea'>
+        <!-- <form> -->
             <input id="inputBox" type="text" placeholder="what needs to be done?">
-        </form>
+        <!-- </form> -->
     </main>
+    <section id="buttons">
+        <button onclick="handlers.addTodo()">Add</button>
+        <button onclick="handlers.toggleAll()">toggle all</button>
+    </section>
 
+    <section id="change">
+        <button onclick="handlers.changeTodo()">Change Todo</button>
+        <input id='changeIndex' type="number">
+        <input id='changeValue' type="text">
+        
+        <div>
+            <button onclick="handlers.deleteTodo()" id="delete">Delete</button>
+            <input id="deleteIndex" type="number">
+        </div>
+        
+        <div>
+            <button onclick="handlers.toggleComplete()">Toggle</button>
+            <input id="toggle" type="number">
+        </div>
+    </section>
+
+    <section id="list">
+        <ul>
+
+        </ul>
+    </section>
+    
     <script src="/script.js"></script>
 </body>
 </html>
