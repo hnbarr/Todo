@@ -1,3 +1,20 @@
-body {
-    /* background-color: bisque; */
+#container {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    padding: 30px;
+    font-family: 'Tajawal', sans-serif;
+}
+
+#inputBox {
+    outline: none;
+    min-width: 500px;
+    padding: 3px;
+}
+
+#title {
+    font-size: 100px;
 }
