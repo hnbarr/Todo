@@ -1,15 +1,18 @@
 'use strict';
 
+
 let show = document.getElementById('showBtn')
 let toggle = document.getElementById('togBtn')
 
 let todoList = {
     todos: [],
     addTodo: function(todo) {
-        this.todos.push({
+        if(todo !== ''){
+          this.todos.push({
             todo: todo,
             completed: false
-        });
+          });
+        }
     },
     changeTodo: function(i, todo){
         this.todos[i].todo = todo
@@ -24,20 +27,18 @@ let todoList = {
     toggleAll: function(){
         let totalTodos = this.todos.length
         let completedTodos= 0;
-        for(let i = 0; i < totalTodos; i++){
-            if(this.todos[i].completed === true){
+        this.todos.forEach((todo)=>{
+            if(todo.completed === true){
                 completedTodos++
             }
-        }
-        if(completedTodos === totalTodos){
-            for(let i = 0; i < totalTodos; i++){
-                this.todos[i].completed = false
+        })
+        this.todos.forEach((todo)=>{
+            if(completedTodos === totalTodos){
+                todo.completed = false
+            } else {
+                todo.completed = true
             }
-        } else {
-            for(let i = 0; i < totalTodos; i++){
-                this.todos[i].completed = true
-            }
-        }
+        })
     }
 };
 
@@ -56,10 +57,8 @@ let handlers = {
         changeValue.value = ''
         view.displayTodos()
     },
-    deleteTodo: function() {
-        let deleteVal = document.getElementById('deleteIndex')
-        todoList.deleteTodo(deleteVal.valueAsNumber)
-        deleteVal.value = ''
+    deleteTodo: function(index) {
+        todoList.deleteTodo(index)
         view.displayTodos()
     },
     toggleComplete: function() {
@@ -78,18 +77,34 @@ let view = {
     displayTodos: function() {
         let listRoot = document.querySelector('ul')
         listRoot.innerHTML = ''
-        for(let i = 0; i < todoList.todos.length; i++){
+        todoList.todos.forEach((todo, i)=>{
             let todoLi = document.createElement('li')
-            let todo = todoList.todos[i]
-            let todoTextWithCompletion = ''
-            
+            let todoTextWithCompletion = ''   
             if(todo.completed === true){
                 todoTextWithCompletion = '( x )' + todo.todo
             }else {
                 todoTextWithCompletion = '(   )' + todo.todo
             }
+            todoLi.id = i
             todoLi.textContent = todoTextWithCompletion
+            todoLi.appendChild(this.createDeleteBtn())
             listRoot.appendChild(todoLi)
-        }
+        })
+    },
+    createDeleteBtn: function() {
+        let deleteBtn = document.createElement('button')
+        deleteBtn.textContent = 'Delete'
+        deleteBtn.className= 'deleteBtn'
+        return deleteBtn
+    },
+    setUpEventListeners: function(){
+        let listSection = document.querySelector('ul')
+        listSection.addEventListener('click', function(e){
+            let clicked = e.target
+            if(clicked.className === 'deleteBtn'){
+                handlers.deleteTodo(clicked.parentNode.id)
+            }
+        })
     }
 }
+view.setUpEventListeners()

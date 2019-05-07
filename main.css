@@ -27,3 +27,7 @@ button {
     outline: none;
     margin: 3px;
 }
+
+li {
+    list-style-type: none;
+}
